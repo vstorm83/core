@@ -18,6 +18,7 @@
  */
 package org.exoplatform.services.security;
 
+import gnu.trove.set.hash.THashSet;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
@@ -28,7 +29,6 @@ import org.exoplatform.services.listener.ListenerService;
 import org.exoplatform.services.security.impl.DefaultRolesExtractorImpl;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -208,7 +208,7 @@ public class TestSessionRegistry extends TestCase
       MembershipEntry me = new MembershipEntry("exo");
       assertEquals("*", me.getMembershipType());
 
-      Set<MembershipEntry> memberships = new HashSet<MembershipEntry>();
+      Set<MembershipEntry> memberships = new THashSet<MembershipEntry>();
       memberships.add(new MembershipEntry("exogroup"));
       memberships.add(new MembershipEntry("exogroup1", "member"));
 
@@ -224,7 +224,7 @@ public class TestSessionRegistry extends TestCase
 
    public void testDefaultRolesExtractor() throws Exception
    {
-      Set<MembershipEntry> memberships = new HashSet<MembershipEntry>();
+      Set<MembershipEntry> memberships = new THashSet<MembershipEntry>();
       memberships.add(new MembershipEntry("exogroup"));
       memberships.add(new MembershipEntry("exogroup/exogroup1/exogroup2", "member"));
       DefaultRolesExtractorImpl extractor = new DefaultRolesExtractorImpl();

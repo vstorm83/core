@@ -18,7 +18,8 @@
  */
 package org.exoplatform.services.security;
 
-import java.util.HashSet;
+import gnu.trove.set.hash.THashSet;
+
 import java.util.Set;
 
 import javax.security.auth.login.LoginException;
@@ -51,7 +52,7 @@ public class DummyAuthenticatorImpl implements Authenticator
     */
    public Identity createIdentity(String userId)
    {
-      Set<MembershipEntry> entries = new HashSet<MembershipEntry>();
+      Set<MembershipEntry> entries = new THashSet<MembershipEntry>();
       entries.add(new MembershipEntry(userId));
       return new Identity(userId, entries, rolesExtractor.extractRoles(userId, entries));
    }

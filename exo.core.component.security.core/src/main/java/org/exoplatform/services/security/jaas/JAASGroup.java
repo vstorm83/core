@@ -18,12 +18,14 @@
  */
 package org.exoplatform.services.security.jaas;
 
+import gnu.trove.set.hash.THashSet;
+
 import java.io.Serializable;
 import java.security.Principal;
 import java.security.acl.Group;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created y the eXo platform team User: Benjamin Mestrallet Date: 29 avr. 2004
@@ -38,13 +40,13 @@ public class JAASGroup implements Group, Serializable
    private String name = null;
 
    @SuppressWarnings("unchecked")
-   private HashSet members = null;
+   private Set members = null;
 
    @SuppressWarnings("unchecked")
    public JAASGroup(String n)
    {
       this.name = n;
-      this.members = new HashSet();
+      this.members = new THashSet();
    }
 
    /**

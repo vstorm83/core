@@ -18,12 +18,12 @@
  */
 package org.exoplatform.services.security;
 
+import gnu.trove.set.hash.THashSet;
 import junit.framework.TestCase;
 
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.security.impl.DefaultRolesExtractorImpl;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -96,7 +96,7 @@ public class TestRolesExtractor extends TestCase
     */
    private Set<MembershipEntry> getGroups1()
    {
-      Set<MembershipEntry> groups = new HashSet<MembershipEntry>();
+      Set<MembershipEntry> groups = new THashSet<MembershipEntry>();
       groups.add(new MembershipEntry("/admin"));
       groups.add(new MembershipEntry("/exo"));
       return groups;
@@ -107,7 +107,7 @@ public class TestRolesExtractor extends TestCase
     */
    private Set<MembershipEntry> getGroups2()
    {
-      Set<MembershipEntry> groups = new HashSet<MembershipEntry>();
+      Set<MembershipEntry> groups = new THashSet<MembershipEntry>();
       groups.add(new MembershipEntry("/admin"));
       groups.add(new MembershipEntry("/exo"));
       groups.add(new MembershipEntry("/organization/management/executive-board"));

@@ -24,7 +24,7 @@ import org.codehaus.groovy.ast.expr.PropertyExpression;
 import org.codehaus.groovy.ast.expr.VariableExpression;
 
 import java.util.Collections;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,14 +52,14 @@ class Package
    {
       this.parent = null;
       this.target = null;
-      this.subMappers = new HashMap<String, Package>();
+      this.subMappers = new THashMap<String, Package>();
    }
 
    private Package(Package parent)
    {
       this.parent = parent;
       this.target = null;
-      this.subMappers = new HashMap<String, Package>();
+      this.subMappers = new THashMap<String, Package>();
    }
 
    public void add(List<String> source, List<String> target)

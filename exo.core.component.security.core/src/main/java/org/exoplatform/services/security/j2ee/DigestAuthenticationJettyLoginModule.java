@@ -18,6 +18,9 @@
  */
 package org.exoplatform.services.security.j2ee;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import org.eclipse.jetty.plus.jaas.callback.ObjectCallback;
 import org.eclipse.jetty.security.authentication.DigestAuthenticator;
 import org.exoplatform.services.security.Authenticator;
@@ -28,8 +31,6 @@ import org.exoplatform.services.security.UsernameCredential;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -144,8 +145,8 @@ public class DigestAuthenticationJettyLoginModule extends JettyLoginModule
     */
    private Credential[] getCredentials()
    {
-      Map<String, String> passwordContext = new HashMap<String, String>();
-      Set<String> contextElements = new HashSet<String>();
+      Map<String, String> passwordContext = new THashMap<String, String>();
+      Set<String> contextElements = new THashSet<String>();
       // object to contain DigestAuthenticator$Digest instance to get
       // needed data from instance's fields
       Object objectFromCallback = ((ObjectCallback)objectCallback[0]).getObject();

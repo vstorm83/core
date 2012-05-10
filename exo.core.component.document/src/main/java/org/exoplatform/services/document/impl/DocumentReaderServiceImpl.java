@@ -25,7 +25,7 @@ import org.exoplatform.services.document.DocumentReaderService;
 import org.exoplatform.services.document.HandlerNotFoundException;
 
 import java.io.InputStream;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 /**
@@ -41,7 +41,7 @@ public class DocumentReaderServiceImpl implements DocumentReaderService
 
    public DocumentReaderServiceImpl(InitParams params)
    {
-      readers_ = new HashMap<String, DocumentReader>();
+      readers_ = new THashMap<String, DocumentReader>();
    }
 
    @Deprecated

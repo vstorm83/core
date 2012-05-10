@@ -18,6 +18,8 @@
  */
 package org.exoplatform.services.organization.auth;
 
+import gnu.trove.set.hash.THashSet;
+
 import org.exoplatform.container.component.ComponentRequestLifecycle;
 import org.exoplatform.container.component.RequestLifeCycle;
 import org.exoplatform.services.log.ExoLogger;
@@ -37,7 +39,6 @@ import org.exoplatform.services.security.RolesExtractor;
 import org.exoplatform.services.security.UsernameCredential;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -94,7 +95,7 @@ public class OrganizationAuthenticatorImpl implements Authenticator
     */
    public Identity createIdentity(String userId) throws Exception
    {
-      Set<MembershipEntry> entries = new HashSet<MembershipEntry>();
+      Set<MembershipEntry> entries = new THashSet<MembershipEntry>();
       begin(orgService);
       Collection<Membership> memberships = orgService.getMembershipHandler().findMembershipsByUser(userId);
       end(orgService);

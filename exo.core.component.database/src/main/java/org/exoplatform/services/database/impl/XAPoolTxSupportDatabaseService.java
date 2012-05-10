@@ -18,6 +18,8 @@
  */
 package org.exoplatform.services.database.impl;
 
+import gnu.trove.map.hash.THashMap;
+
 import org.enhydra.jdbc.pool.StandardXAPoolDataSource;
 import org.enhydra.jdbc.standard.StandardXADataSource;
 import org.exoplatform.commons.utils.SecurityHelper;
@@ -29,7 +31,6 @@ import org.exoplatform.services.transaction.TransactionService;
 
 import java.security.PrivilegedAction;
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ import javax.sql.DataSource;
  */
 public class XAPoolTxSupportDatabaseService implements DatabaseService
 {
-   private HashMap<String, ExoDatasource> datasources_;
+   private THashMap<String, ExoDatasource> datasources_;
 
    private ExoDatasource defaultDS_;
 
@@ -49,7 +50,7 @@ public class XAPoolTxSupportDatabaseService implements DatabaseService
 
    public XAPoolTxSupportDatabaseService(InitParams params, TransactionService txService) throws Exception
    {
-      datasources_ = new HashMap<String, ExoDatasource>(5);
+      datasources_ = new THashMap<String, ExoDatasource>(5);
       txService_ = txService;
       Iterator i = params.getPropertiesParamIterator();
       while (i.hasNext())

@@ -18,12 +18,13 @@
  */
 package org.exoplatform.services.document.impl.diff;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import org.exoplatform.services.document.diff.DiffAlgorithm;
 import org.exoplatform.services.document.diff.Revision;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -234,12 +235,12 @@ public class SimpleDiff implements DiffAlgorithm
       // construct a set of the objects that orig and rev have in common
 
       // first construct a set containing all the elements in orig
-      Set items = new HashSet(Arrays.asList(orig));
+      Set items = new THashSet(Arrays.asList(orig));
 
       // then remove all those not in rev
       items.retainAll(Arrays.asList(rev));
 
-      Map eqs = new HashMap();
+      Map eqs = new THashMap();
       for (int i = 0; i < orig.length; i++)
       {
          // if its a common item and hasn't been found before

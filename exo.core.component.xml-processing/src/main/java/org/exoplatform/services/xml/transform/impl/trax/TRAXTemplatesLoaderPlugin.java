@@ -22,7 +22,7 @@ import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PropertiesParam;
 
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 /**
@@ -32,7 +32,7 @@ import java.util.Map;
 public class TRAXTemplatesLoaderPlugin extends BaseComponentPlugin
 {
 
-   private Map<String, String> templates_ = new HashMap<String, String>();
+   private Map<String, String> templates_ = new THashMap<String, String>();
 
    public TRAXTemplatesLoaderPlugin(InitParams params) throws Exception
    {

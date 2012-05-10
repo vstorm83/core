@@ -18,6 +18,8 @@
  */
 package org.exoplatform.services.database.table;
 
+import gnu.trove.map.hash.THashMap;
+
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.services.database.DAO;
 import org.exoplatform.services.database.DBObject;
@@ -28,7 +30,6 @@ import org.exoplatform.services.database.annotation.Table;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,12 +39,12 @@ import java.util.List;
 public class IDGenerator extends DAO<ExoLongID>
 {
 
-   private HashMap<Class, IDTracker> idTrackers_;
+   private THashMap<Class, IDTracker> idTrackers_;
 
    public IDGenerator(ExoDatasource datasource) throws Exception
    {
       super(datasource, new ExoLongIDMapper());
-      idTrackers_ = new HashMap<Class, IDTracker>();
+      idTrackers_ = new THashMap<Class, IDTracker>();
 
       DBTableManager tableManager = datasource.getDBTableManager();
       if (tableManager.hasTable(ExoLongID.class))

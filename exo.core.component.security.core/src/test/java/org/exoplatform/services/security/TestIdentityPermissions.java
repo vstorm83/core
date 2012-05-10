@@ -18,10 +18,11 @@
  */
 package org.exoplatform.services.security;
 
+import gnu.trove.set.hash.THashSet;
+
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import javax.security.auth.Subject;
 
@@ -73,7 +74,7 @@ public class TestIdentityPermissions extends BaseSecurityTest
          {
             public Object run() throws Exception
             {
-               getIdentity().setRoles(new HashSet<String>());
+               getIdentity().setRoles(new THashSet<String>());
                return null;
             }
          }, PermissionConstants.MODIFY_IDENTITY_PERMISSION);
@@ -118,7 +119,7 @@ public class TestIdentityPermissions extends BaseSecurityTest
          {
             public Object run() throws Exception
             {
-               getIdentity().setRoles(new HashSet<String>());
+               getIdentity().setRoles(new THashSet<String>());
                return null;
             }
          });
@@ -164,7 +165,7 @@ public class TestIdentityPermissions extends BaseSecurityTest
             @SuppressWarnings("deprecation")
             public Object run() throws Exception
             {
-               getIdentity().setMemberships(new HashSet<MembershipEntry>());
+               getIdentity().setMemberships(new THashSet<MembershipEntry>());
                return null;
             }
          }, PermissionConstants.MODIFY_IDENTITY_PERMISSION);
@@ -210,7 +211,7 @@ public class TestIdentityPermissions extends BaseSecurityTest
             @SuppressWarnings("deprecation")
             public Object run() throws Exception
             {
-               getIdentity().setMemberships(new HashSet<MembershipEntry>());
+               getIdentity().setMemberships(new THashSet<MembershipEntry>());
                return null;
             }
          });

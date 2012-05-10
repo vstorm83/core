@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +71,7 @@ public class GroovyScriptInstantiator
    public GroovyScriptInstantiator(ExoContainerContext containerContext)
    {
       this.container = containerContext.getContainer();
-      this.mapping = Collections.synchronizedMap(new HashMap<String, String>());
+      this.mapping = Collections.synchronizedMap(new THashMap<String, String>());
    }
 
    /**

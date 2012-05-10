@@ -18,9 +18,11 @@
  */
 package org.exoplatform.services.organization.impl;
 
+import gnu.trove.set.hash.THashSet;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Tuan Nguyen (tuan08@users.sourceforge.net)
@@ -34,13 +36,13 @@ public class NewUserConfig
 
    private List group;
 
-   private HashSet ignoredUser;
+   private Set ignoredUser;
 
    public NewUserConfig()
    {
       role = new ArrayList(3);
       group = new ArrayList(3);
-      ignoredUser = new HashSet();
+      ignoredUser = new THashSet();
    }
 
    public List getRole()
@@ -53,7 +55,7 @@ public class NewUserConfig
       return group;
    }
 
-   public HashSet getIgnoredUser()
+   public Set getIgnoredUser()
    {
       return ignoredUser;
    }

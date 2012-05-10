@@ -34,7 +34,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Types;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -47,7 +47,7 @@ public class ReflectionMapper<T extends DBObject> implements DBObjectMapper<T>
 
    public String[][] toParameters(T bean) throws Exception
    {
-      Map<String, String> map = new HashMap<String, String>();
+      Map<String, String> map = new THashMap<String, String>();
       getParameters(bean, bean.getClass(), map);
 
       String[][] parameters = new String[map.size()][2];

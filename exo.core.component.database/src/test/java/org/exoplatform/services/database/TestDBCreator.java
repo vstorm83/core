@@ -27,7 +27,7 @@ import org.exoplatform.services.database.creator.DBCreator;
 import org.exoplatform.services.naming.InitialContextInitializer;
 
 import java.sql.Connection;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -86,7 +86,7 @@ public class TestDBCreator extends TestCase
       assertNotNull(dbCreator);
       
       String serverUrl = "jdbc:hsqldb:file:target/temp/data/dbcreator_test";
-      Map<String, String> connectionProperties = new HashMap<String, String>();
+      Map<String, String> connectionProperties = new THashMap<String, String>();
       connectionProperties.put("driverClassName", "org.hsqldb.jdbcDriver");
       connectionProperties.put("username", "sa");
       connectionProperties.put("password", "");

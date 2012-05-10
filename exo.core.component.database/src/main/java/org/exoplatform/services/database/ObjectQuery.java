@@ -21,7 +21,7 @@ package org.exoplatform.services.database;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -229,7 +229,7 @@ public class ObjectQuery
     */
    public Map<String, Object> getBindingFields()
    {
-      Map<String, Object> binding = new HashMap<String, Object>();
+      Map<String, Object> binding = new THashMap<String, Object>();
 
       if (parameters_.size() > 0)
       {

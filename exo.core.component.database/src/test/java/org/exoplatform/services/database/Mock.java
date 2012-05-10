@@ -18,13 +18,14 @@
  */
 package org.exoplatform.services.database;
 
+import gnu.trove.map.hash.THashMap;
+
 import org.exoplatform.services.database.annotation.Table;
 import org.exoplatform.services.database.annotation.TableField;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created by The eXo Platform SAS Author : Tuan Nguyen
@@ -134,7 +135,7 @@ public class Mock extends DBObject
     */
    public void getUserByName(String s)
    {
-      HashMap<String, String> values = new HashMap<String, String>();
+      THashMap<String, String> values = new THashMap<String, String>();
       values.put("username", s);
       values.put("fname", s);
       // Object[] params = {

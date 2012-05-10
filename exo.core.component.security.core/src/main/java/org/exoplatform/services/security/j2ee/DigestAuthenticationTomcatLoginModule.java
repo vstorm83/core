@@ -18,6 +18,9 @@
  */
 package org.exoplatform.services.security.j2ee;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import org.exoplatform.services.security.Authenticator;
 import org.exoplatform.services.security.Credential;
 import org.exoplatform.services.security.Identity;
@@ -25,8 +28,6 @@ import org.exoplatform.services.security.PasswordCredential;
 import org.exoplatform.services.security.UsernameCredential;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -118,8 +119,8 @@ public class DigestAuthenticationTomcatLoginModule extends TomcatLoginModule
    private Credential[] getCredentials() throws IOException
    {
 
-      Map<String, String> passwordContext = new HashMap<String, String>();
-      Set<String> contextElements = new HashSet<String>();
+      Map<String, String> passwordContext = new THashMap<String, String>();
+      Set<String> contextElements = new THashSet<String>();
       Callback[] digestCallback = new Callback[1];
       String username = null;
       String password = null;

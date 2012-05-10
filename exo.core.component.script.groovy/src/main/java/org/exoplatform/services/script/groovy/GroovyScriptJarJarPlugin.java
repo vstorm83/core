@@ -23,7 +23,7 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class GroovyScriptJarJarPlugin extends BaseComponentPlugin
 {
 
    /** The mapping state. */
-   private final Map<String, String> mapping = new HashMap<String, String>();
+   private final Map<String, String> mapping = new THashMap<String, String>();
 
    /** Our logger. */
    private final static Log LOG = ExoLogger.getLogger("exo.core.component.script.groovy.GroovyScriptJarJarPlugin");

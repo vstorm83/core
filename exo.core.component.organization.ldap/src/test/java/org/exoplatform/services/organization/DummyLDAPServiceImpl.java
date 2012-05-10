@@ -19,6 +19,9 @@
 
 package org.exoplatform.services.organization;
 
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.server.configuration.MutableServerStartupConfiguration;
 import org.apache.directory.server.core.configuration.MutablePartitionConfiguration;
@@ -30,8 +33,6 @@ import org.exoplatform.services.log.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class DummyLDAPServiceImpl implements LDAPService
 {
    private static final Log LOG = ExoLogger.getLogger("exo.core.component.ldap.LDAPServiceImpl");
 
-   private Map<String, String> env = new HashMap<String, String>();
+   private Map<String, String> env = new THashMap<String, String>();
 
    protected MutableServerStartupConfiguration configuration = new MutableServerStartupConfiguration();
 
@@ -73,7 +74,7 @@ public class DummyLDAPServiceImpl implements LDAPService
       pcfg.setName("eXoTestPartition");
       pcfg.setSuffix("dc=exoplatform,dc=org");
 
-      Set<String> indexedAttrs = new HashSet<String>();
+      Set<String> indexedAttrs = new THashSet<String>();
       indexedAttrs.add("objectClass");
       indexedAttrs.add("o");
       pcfg.setIndexedAttributes(indexedAttrs);
@@ -88,7 +89,7 @@ public class DummyLDAPServiceImpl implements LDAPService
       attrs.put(attr);
       pcfg.setContextEntry(attrs);
 
-      Set<MutablePartitionConfiguration> pcfgs = new HashSet<MutablePartitionConfiguration>();
+      Set<MutablePartitionConfiguration> pcfgs = new THashSet<MutablePartitionConfiguration>();
       pcfgs.add(pcfg);
       configuration.setContextPartitionConfigurations(pcfgs);
       File workingDirectory = new File("target/working-server");

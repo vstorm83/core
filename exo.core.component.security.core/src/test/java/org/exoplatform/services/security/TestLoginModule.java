@@ -26,7 +26,7 @@ import org.exoplatform.services.security.jaas.DigestCallbackHandler;
 
 import java.net.URL;
 import java.security.MessageDigest;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 import javax.security.auth.login.LoginContext;
@@ -112,7 +112,7 @@ public class TestLoginModule extends TestCase
       /**
        * Here we are going to keep all password context information
        */
-      Map<String, String> passwordContext = new HashMap<String, String>();
+      Map<String, String> passwordContext = new THashMap<String, String>();
 
       passwordContext.put("realmName", "eXo REST services");
       passwordContext.put("nonce", "2c613333aa4cc017d358c09f61977718");

@@ -26,7 +26,7 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 /**
@@ -228,7 +228,7 @@ public class CacheHandler
 
          try
          {
-            final Map<Serializable, Membership> wait4Adding = new HashMap<Serializable, Membership>();
+            final Map<Serializable, Membership> wait4Adding = new THashMap<Serializable, Membership>();
             final Serializable finalNewKey = newKey;
             membershipCache.select(new CachedObjectSelector<Serializable, Membership>()
             {

@@ -24,7 +24,7 @@ import org.exoplatform.services.log.Log;
 import org.exoplatform.services.xml.resolving.XMLResolvingService;
 import org.xml.sax.EntityResolver;
 
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,9 +37,9 @@ public class XMLResolvingServiceImpl implements XMLResolvingService
 
    private static final Log LOG = ExoLogger.getLogger("exo.core.component.xml-processing.XMLResolvingServiceImpl");
 
-   private Map<String, String> publicIDs_ = new HashMap<String, String>();
+   private Map<String, String> publicIDs_ = new THashMap<String, String>();
 
-   private Map<String, String> systemIDs_ = new HashMap<String, String>();
+   private Map<String, String> systemIDs_ = new THashMap<String, String>();
 
    public XMLResolvingServiceImpl()
    {

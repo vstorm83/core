@@ -26,7 +26,7 @@ import org.exoplatform.services.security.UsernameCredential;
 import org.jboss.security.auth.callback.MapCallback;
 
 import java.io.IOException;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 import javax.security.auth.callback.Callback;
@@ -143,7 +143,7 @@ public class DigestAuthenticationJbossLoginModule extends JbossLoginModule
    {
       String username = null;
       String password = null;
-      Map<String, String> passwordContext = new HashMap<String, String>();
+      Map<String, String> passwordContext = new THashMap<String, String>();
 
       passwordContext.put("qop", (String)mapCallback[0].getInfo("qop"));
       passwordContext.put("nonce", (String)mapCallback[0].getInfo("nonce"));

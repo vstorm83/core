@@ -27,7 +27,7 @@ import org.exoplatform.services.document.impl.DocumentReaderServiceImpl;
 
 import java.io.InputStream;
 import java.security.PrivilegedExceptionAction;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 
 /**
@@ -106,7 +106,7 @@ public class TikaDocumentReaderServiceImpl extends DocumentReaderServiceImpl
 
             reader = new TikaDocumentReader(tikaParser, mimeType);
             // Initialize the map with the existing values 
-            Map<String, DocumentReader> tmpReaders = new HashMap<String, DocumentReader>(readers_);
+            Map<String, DocumentReader> tmpReaders = new THashMap<String, DocumentReader>(readers_);
             // Register new document reader 
             tmpReaders.put(mimeType, reader);
             // Update the map of readers 

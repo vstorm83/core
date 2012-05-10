@@ -18,6 +18,8 @@
  */
 package org.exoplatform.services.database.impl;
 
+import gnu.trove.set.hash.THashSet;
+
 import org.exoplatform.commons.exception.ObjectNotFoundException;
 import org.exoplatform.commons.utils.ClassLoading;
 import org.exoplatform.commons.utils.PrivilegedSystemHelper;
@@ -49,10 +51,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -78,7 +80,7 @@ public class HibernateServiceImpl implements HibernateService, ComponentRequestL
 
    private SessionFactory sessionFactory_;
 
-   private HashSet<String> mappings_ = new HashSet<String>();
+   private Set<String> mappings_ = new THashSet<String>();
 
    @SuppressWarnings("unchecked")
    public HibernateServiceImpl(InitParams initParams, CacheService cacheService)

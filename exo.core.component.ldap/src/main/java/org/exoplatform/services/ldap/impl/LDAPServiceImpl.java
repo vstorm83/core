@@ -30,7 +30,7 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 
 import java.io.File;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -57,7 +57,7 @@ public class LDAPServiceImpl implements LDAPService, ComponentRequestLifecycle
 
    private static final Log LOG = ExoLogger.getLogger("exo.core.component.ldap.LDAPServiceImpl");
 
-   private Map<String, String> env = new HashMap<String, String>();
+   private Map<String, String> env = new THashMap<String, String>();
 
    private int serverType = DEFAULT_SERVER;
 

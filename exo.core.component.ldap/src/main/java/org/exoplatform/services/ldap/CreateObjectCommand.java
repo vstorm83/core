@@ -22,7 +22,7 @@ import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PropertiesParam;
 
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class CreateObjectCommand extends BaseComponentPlugin
    @SuppressWarnings("unchecked")
    public CreateObjectCommand(InitParams params)
    {
-      objectsToCreate = new HashMap<String, Attributes>();
+      objectsToCreate = new THashMap<String, Attributes>();
       Iterator i = params.getPropertiesParamIterator();
       while (i.hasNext())
       {

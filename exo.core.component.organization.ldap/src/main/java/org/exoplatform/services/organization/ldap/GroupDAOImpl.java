@@ -18,6 +18,8 @@
  */
 package org.exoplatform.services.organization.ldap;
 
+import gnu.trove.set.hash.THashSet;
+
 import org.exoplatform.commons.utils.SecurityHelper;
 import org.exoplatform.services.ldap.LDAPService;
 import org.exoplatform.services.log.ExoLogger;
@@ -34,7 +36,6 @@ import org.exoplatform.services.security.PermissionConstants;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -727,7 +728,7 @@ public class GroupDAOImpl extends BaseDAO implements GroupHandler, GroupEventLis
                results = ctx.search(ldapAttrMapping.groupsURL, filter, constraints);
 
                // add groups for memberships matching user
-               Set<String> uniqueGroupsDN = new HashSet<String>();
+               Set<String> uniqueGroupsDN = new THashSet<String>();
                while (results != null && results.hasMore())
                {
                   SearchResult sr = results.next();

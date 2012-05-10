@@ -28,7 +28,7 @@ import org.exoplatform.services.xml.transform.trax.TRAXTemplatesService;
 import org.exoplatform.services.xml.transform.trax.TRAXTransformerService;
 import org.picocontainer.Startable;
 
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,7 +52,7 @@ public class TRAXTemplatesServiceImpl implements TRAXTemplatesService, Startable
    public TRAXTemplatesServiceImpl(TRAXTransformerService traxTransformerService)
    {
       traxTransformerService_ = traxTransformerService;
-      templates_ = new HashMap<String, TRAXTemplates>();
+      templates_ = new THashMap<String, TRAXTemplates>();
    }
 
    /*

@@ -18,13 +18,14 @@
  */
 package org.exoplatform.services.security.impl;
 
+import gnu.trove.set.hash.THashSet;
+
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.security.MembershipEntry;
 import org.exoplatform.services.security.RolesExtractor;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -68,7 +69,7 @@ public class DefaultRolesExtractorImpl implements RolesExtractor
    public Set<String> extractRoles(String userId, Set<MembershipEntry> memberships)
    {
 
-      Set<String> roles = new HashSet<String>();
+      Set<String> roles = new THashSet<String>();
       for (MembershipEntry membership : memberships)
       {
          String[] splittedGroupName = StringUtils.split(membership.getGroup(), "/");

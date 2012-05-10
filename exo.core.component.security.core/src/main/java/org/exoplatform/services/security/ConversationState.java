@@ -18,8 +18,9 @@
  */
 package org.exoplatform.services.security;
 
+import gnu.trove.map.hash.THashMap;
+
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -50,12 +51,12 @@ public class ConversationState
    /**
     * Additions attributes of ConversationState.
     */
-   private HashMap<String, Object> attributes;
+   private THashMap<String, Object> attributes;
 
    public ConversationState(Identity identity)
    {
       this.identity = identity;
-      this.attributes = new HashMap<String, Object>();
+      this.attributes = new THashMap<String, Object>();
    }
 
    /**

@@ -36,7 +36,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
+import gnu.trove.map.hash.THashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -166,7 +166,7 @@ public class DBCreator
 
          // Store all connection properties into single map          
          Iterator<Property> pit = prop.getPropertyIterator();
-         connectionProperties = new HashMap<String, String>();
+         connectionProperties = new THashMap<String, String>();
          while (pit.hasNext())
          {
             Property p = pit.next();
@@ -355,7 +355,7 @@ public class DBCreator
       }
 
       // clone connection properties
-      Map<String, String> connProperties = new HashMap<String, String>();
+      Map<String, String> connProperties = new THashMap<String, String>();
 
       for (Entry<String, String> entry : connectionProperties.entrySet())
       {

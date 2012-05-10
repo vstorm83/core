@@ -18,10 +18,11 @@
  */
 package org.exoplatform.services.security;
 
+import gnu.trove.set.hash.THashSet;
+
 import org.exoplatform.commons.utils.secure.SecureCollections;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.security.auth.Subject;
@@ -67,7 +68,7 @@ public class Identity
     */
    public Identity(String userId)
    {
-      this(userId, new HashSet<MembershipEntry>(), new HashSet<String>());
+      this(userId, new THashSet<MembershipEntry>(), new THashSet<String>());
    }
 
    /**
@@ -76,7 +77,7 @@ public class Identity
     */
    public Identity(String userId, Collection<MembershipEntry> memberships)
    {
-      this(userId, memberships, new HashSet<String>());
+      this(userId, memberships, new THashSet<String>());
    }
 
    /**
@@ -88,10 +89,10 @@ public class Identity
    {
       this.userId = userId;
       this.memberships =
-         SecureCollections.secureSet(new HashSet<MembershipEntry>(memberships),
+         SecureCollections.secureSet(new THashSet<MembershipEntry>(memberships),
             PermissionConstants.MODIFY_IDENTITY_PERMISSION);
       this.roles =
-         SecureCollections.secureSet(new HashSet<String>(roles), PermissionConstants.MODIFY_IDENTITY_PERMISSION);;
+         SecureCollections.secureSet(new THashSet<String>(roles), PermissionConstants.MODIFY_IDENTITY_PERMISSION);;
    }
 
    /**
@@ -139,7 +140,7 @@ public class Identity
     */
    public Set<String> getGroups()
    {
-      Set<String> groups = new HashSet<String>();
+      Set<String> groups = new THashSet<String>();
       for (MembershipEntry m : memberships)
       {
          groups.add(m.getGroup());
