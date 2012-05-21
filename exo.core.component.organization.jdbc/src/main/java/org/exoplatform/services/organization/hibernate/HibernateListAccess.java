@@ -46,7 +46,7 @@ import org.hibernate.Session;
 
 import java.lang.reflect.Array;
 import java.security.PrivilegedAction;
-import gnu.trove.map.hash.THashMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +96,7 @@ public class HibernateListAccess<E> implements ListAccess<E>
       this.service = service;
       this.findQuery = findQuery;
       this.countQuery = countQuery;
-      this.binding = new THashMap<String, Object>();
+      this.binding = new HashMap<String, Object>();
    }
 
    /**

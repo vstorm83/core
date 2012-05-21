@@ -22,7 +22,7 @@ import org.exoplatform.commons.utils.PageList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import gnu.trove.map.hash.THashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,7 +41,7 @@ public class DBObjectPageList extends PageList
 
    private HibernateService service_;
 
-   private Map<String, Object> binding = new THashMap<String, Object>();
+   private Map<String, Object> binding = new HashMap<String, Object>();
 
    public DBObjectPageList(HibernateService service, Class objectType) throws Exception
    {

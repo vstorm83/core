@@ -19,7 +19,7 @@
 package org.exoplatform.services.script.groovy.jarjar;
 
 import java.util.Arrays;
-import gnu.trove.map.hash.THashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +35,7 @@ public class Mapping
 
    public Mapping()
    {
-      map = new THashMap<List<String>, List<String>>();
+      map = new HashMap<List<String>, List<String>>();
    }
 
    public void addMapping(String source, String destination)

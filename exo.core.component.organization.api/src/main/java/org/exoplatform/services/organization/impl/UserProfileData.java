@@ -19,6 +19,7 @@
 package org.exoplatform.services.organization.impl;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 import org.exoplatform.commons.utils.SecurityHelper;
 
@@ -118,7 +119,7 @@ public class UserProfileData
          {
             public XStream run()
             {
-               return new XStream();
+               return new XStream(new XppDriver());
             }
          });
          xstream_.alias("user-profile", UserProfileImpl.class);
