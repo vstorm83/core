@@ -20,6 +20,7 @@ package org.exoplatform.services.organization;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by The eXo Platform SAS . Author : Tuan Nguyen
@@ -33,12 +34,16 @@ public class Query implements Serializable
    private String fname_;
 
    private String lname_;
+   
+   private String displayName_;
 
    private String email_;
 
    private Date from_;
 
    private Date to_;
+   
+   private Set<Membership> memberhips_;
 
    public Query()
    {
@@ -104,7 +109,25 @@ public class Query implements Serializable
       to_ = d;
    }
 
-   public boolean isEmpty()
+   public String getDisplayName() {
+    return displayName_;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName_ = displayName;
+  }
+
+  public Set<Membership> getMemberhips() 
+   {
+      return memberhips_;
+   }
+
+  public void setMemberhips(Set<Membership> memberhips) 
+  {
+      this.memberhips_ = memberhips;
+  }
+
+  public boolean isEmpty()
    {
       return email_ == null && fname_ == null && from_ == null && lname_ == null && to_ == null && userName_ == null;
    }
