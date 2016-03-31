@@ -43,7 +43,7 @@ public class Query implements Serializable
 
    private Date to_;
    
-   private Set<Membership> memberhips_;
+   private Set<MembershipQuery> memberhipsQuery_;
 
    public Query()
    {
@@ -117,18 +117,68 @@ public class Query implements Serializable
     this.displayName_ = displayName;
   }
 
-  public Set<Membership> getMemberhips() 
+  public Set<MembershipQuery> getMemberhipQuery() 
    {
-      return memberhips_;
+      return memberhipsQuery_;
    }
 
-  public void setMemberhips(Set<Membership> memberhips) 
+  public void setMemberhipQuery(Set<MembershipQuery> memberhipQuery) 
   {
-      this.memberhips_ = memberhips;
+      this.memberhipsQuery_ = memberhipQuery;
   }
 
   public boolean isEmpty()
    {
-      return email_ == null && fname_ == null && from_ == null && lname_ == null && to_ == null && userName_ == null;
+      return email_ == null && fname_ == null && from_ == null && lname_ == null && to_ == null && userName_ == null && memberhipsQuery_ == null;
    }
+  
+  public static class MembershipQuery {
+    private String groupId;
+    
+    private String membershipType;
+
+    public MembershipQuery(String groupId, String membershipType) {
+      this.groupId = groupId;
+      this.membershipType = membershipType;
+    }
+
+    public String getGroupId() {
+      return groupId;
+    }
+
+    public String getMembershipType() {
+      return membershipType;
+    }
+
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((groupId == null) ? 0 : groupId.hashCode());
+      result = prime * result + ((membershipType == null) ? 0 : membershipType.hashCode());
+      return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      MembershipQuery other = (MembershipQuery) obj;
+      if (groupId == null) {
+        if (other.groupId != null)
+          return false;
+      } else if (!groupId.equals(other.groupId))
+        return false;
+      if (membershipType == null) {
+        if (other.membershipType != null)
+          return false;
+      } else if (!membershipType.equals(other.membershipType))
+        return false;
+      return true;
+    }    
+  }
 }

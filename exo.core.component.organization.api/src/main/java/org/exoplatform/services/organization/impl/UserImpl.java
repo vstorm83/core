@@ -25,10 +25,14 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -74,6 +78,11 @@ public class UserImpl implements User, ExtendedCloneable, Serializable
 
    @Column
    private Boolean enabled;
+   
+   //define mapping to allow hibernate making join query
+   @OneToMany(fetch = FetchType.LAZY)
+   @JoinColumn(name = "userName")
+   private List<MembershipImpl> memberships;
 
    public UserImpl()
    {

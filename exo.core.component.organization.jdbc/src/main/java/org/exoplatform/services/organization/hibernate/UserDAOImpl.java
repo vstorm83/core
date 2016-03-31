@@ -23,6 +23,7 @@ import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.commons.utils.SecurityHelper;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
+import org.exoplatform.services.database.QueryCondition;
 import org.exoplatform.services.database.HibernateService;
 import org.exoplatform.services.database.ObjectQuery;
 import org.exoplatform.services.organization.DisabledUserException;
@@ -34,6 +35,7 @@ import org.exoplatform.services.organization.UserEventListener;
 import org.exoplatform.services.organization.UserEventListenerHandler;
 import org.exoplatform.services.organization.UserHandler;
 import org.exoplatform.services.organization.UserStatus;
+import org.exoplatform.services.organization.impl.MembershipImpl;
 import org.exoplatform.services.organization.impl.UserImpl;
 import org.exoplatform.services.security.PasswordEncrypter;
 import org.exoplatform.services.security.PermissionConstants;
@@ -449,6 +451,18 @@ public class UserDAOImpl implements UserHandler, UserEventListenerHandler, Exten
       if (q.getLastName() != null)
       {
          oq.addLIKE("UPPER(lastName)", q.getLastName().toUpperCase());
+      }
+      if (q.getDisplayName() != null) {
+         oq.addLIKE("UPPER(displayName)", q.getDisplayName().toUpperCase());
+      }
+      if (q.getMemberhipQuery() != null && !q.getMemberhipQuery().isEmpty()) {
+         oq.join(MembershipImpl.class, "mem");
+         for (Query.MembershipQuery mq : q.getMemberhipQuery()) {
+           QueryCondition clause = new QueryCondition();
+           clause.addEQ("groupId", mq.getGroupId());
+           clause.addEQ("membershipType", mq.getMembershipType());
+           oq.or(clause);
+         }
       }
       oq.addLIKE("email", q.getEmail());
       oq.addGT("lastLoginTime", q.getFromLoginDate());

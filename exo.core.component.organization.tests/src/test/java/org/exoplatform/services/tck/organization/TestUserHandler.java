@@ -20,17 +20,21 @@ import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.organization.DisabledUserException;
+import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Query;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserEventListener;
 import org.exoplatform.services.organization.UserEventListenerHandler;
 import org.exoplatform.services.organization.UserProfile;
 import org.exoplatform.services.organization.UserStatus;
+import org.exoplatform.services.organization.Query.MembershipQuery;
 import org.exoplatform.services.organization.impl.NewUserConfig;
 import org.exoplatform.services.organization.impl.NewUserEventListener;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by The eXo Platform SAS.
@@ -447,6 +451,27 @@ public class TestUserHandler extends AbstractOrganizationServiceTest
       assertEquals(unsupportedOperation ? 0 : 2, listener.postSetEnabled);
       assertEquals(1, listener.preDelete);
       assertEquals(1, listener.postDelete);
+   }
+   
+   public void testFindUserByMembership() throws Exception {
+     createUser(userName);
+     uHandler.authenticate(userName, "pwdADDSomeSaltToBeCompliantWithSomeIS00");
+     
+     createGroup(null, groupName1, "label", "desc");
+     createMembershipType(membershipType, "desc");
+
+     // link membership     
+     Group group = gHandler.findGroupById("/" + groupName1);
+     mHandler.linkMembership(uHandler.findUserByName(userName), group,
+        mtHandler.findMembershipType(membershipType), true);
+
+     Query query = new Query();
+     MembershipQuery mq = new MembershipQuery(group.getId(), membershipType);
+     Set<MembershipQuery> mQueries = new HashSet<MembershipQuery>();
+     mQueries.add(mq);
+     query.setMemberhipQuery(mQueries);
+
+     assertSizeEquals(1, uHandler.findUsersByQuery(query, UserStatus.ANY), UserStatus.ANY);
    }
 
    /**

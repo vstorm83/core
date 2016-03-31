@@ -19,71 +19,22 @@
 package org.exoplatform.services.database;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Tuan Nguyen (tuan08@users.sourceforge.net)
  * @since Nov 25, 2004
  * @version $Id: ObjectQuery.java 6006 2006-06-06 10:01:27Z thangvn $
  */
-public class ObjectQuery
+public class ObjectQuery extends QueryCondition
 {
 
    private Class<?> type_;
 
-   private String orderBy_;
-
-   private String groupBy_;
-
-   private List<Parameter> parameters_;
-
-   private List<Parameter> selectParameter_;
-
    public ObjectQuery(Class<?> type)
    {
       type_ = type;
-      parameters_ = new ArrayList<Parameter>(3);
-      selectParameter_ = new ArrayList<Parameter>(10);
-   }
-
-   public ObjectQuery addEQ(String field, Object value)
-   {
-      if (value != null)
-      {
-         parameters_.add(new Parameter(" = ", field, value));
-      }
-      return this;
-   }
-
-   public ObjectQuery addGT(String field, Object value)
-   {
-      if (value != null)
-      {
-         parameters_.add(new Parameter(" > ", field, value));
-      }
-      return this;
-   }
-
-   public ObjectQuery addLT(String field, Object value)
-   {
-      if (value != null)
-      {
-         parameters_.add(new Parameter(" < ", field, value));
-      }
-      return this;
-   }
-
-   public ObjectQuery addLIKE(String field, String value)
-   {
-      if (value != null && value.length() > 0)
-      {
-         parameters_.add(new Parameter(" LIKE ", field, optimizeInputString(value)));
-      }
-      return this;
    }
 
    public String optimizeInputString(String value)
@@ -92,127 +43,34 @@ public class ObjectQuery
       return value;
    }
 
-   public ObjectQuery addSUM(String field)
-   {
-      selectParameter_.add(new Parameter("SUM", field));
-      return this;
-   }
-
-   public ObjectQuery addSelect(String field)
-   {
-      selectParameter_.add(new Parameter("FIELDSELECT", field));
-      return this;
-   }
-
-   public ObjectQuery addSelectCount(String type)
-   {
-      selectParameter_.add(new Parameter("COUNTSELECT", type));
-      return this;
-   }
-
-   public ObjectQuery addSelectMaxMin(String op, String field)
-   {
-      selectParameter_.add(new Parameter(op, field));
-      return this;
-   }
-
-   public ObjectQuery setGroupBy(String field)
-   {
-      groupBy_ = " GROUP BY o." + field;
-      return this;
-   }
-
-   public ObjectQuery setAscOrderBy(String field)
-   {
-      orderBy_ = " ORDER BY o." + field + " asc";
-      return this;
-   }
-
-   public ObjectQuery setDescOrderBy(String field)
-   {
-      orderBy_ = " ORDER BY o." + field + " desc";
-      return this;
-   }
-
    public String getHibernateQuery()
    {
       StringBuffer b = new StringBuffer();
       b.append("from o in class ").append(type_.getName());
-      if (parameters_.size() > 0)
-      {
-         b.append(" WHERE ");
-         for (int i = 0; i < parameters_.size(); i++)
-         {
-            if (i > 0)
-               b.append(" AND ");
-            Parameter p = parameters_.get(i);
-            if (p.value_ instanceof String)
-            {
-               if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
-               {
-                  b.append(p.field_).append(p.op_).append("'").append(p.value_).append("'");
-               }
-               else
-               {
-                  b.append(" o.").append(p.field_).append(p.op_).append("'").append(p.value_).append("'");
-               }
-            }
-            else if (p.value_ instanceof Date)
-            {
-               SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-               String value = ft.format((Date)p.value_);
-               b.append(" o.").append(p.field_).append(p.op_).append("'").append(value).append("'");
-            }
-            else
-            {
-               b.append(" o.").append(p.field_).append(p.op_).append(p.value_);
-            }
-         }
+      buildJoin(b);
+      if (parameters_.size() > 0 || orClauses.size() > 0) {
+        b.append(" WHERE ");
+        buildCondition(b, this);        
       }
       if (orderBy_ != null)
          b.append(orderBy_);
       return b.toString();
    }
 
-   /**
+  /**
     * 
     * @return
     */
    public String getHibernateQueryWithBinding()
    {
       StringBuffer b = new StringBuffer();
-      b.append("from o in class ").append(type_.getName());
-      if (parameters_.size() > 0)
+      b.append("from o in class ").append(type_.getName()).append(" as ").append(type_.getSimpleName());
+      buildJoin(b);
+      if (parameters_.size() > 0 || orClauses.size() > 0) 
       {
-         b.append(" WHERE ");
-         for (int i = 0; i < parameters_.size(); i++)
-         {
-            if (i > 0)
-               b.append(" AND ");
-            Parameter p = parameters_.get(i);
-            if (p.value_ instanceof String)
-            {
-               if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
-               {
-                  b.append(p.field_).append(p.op_).append(":").append(p.field_.substring(6, p.field_.length() - 1))
-                     .append(i);
-               }
-               else
-               {
-                  b.append(" o.").append(p.field_).append(p.op_).append(":").append(p.field_).append(i);
-               }
-            }
-            else if (p.value_ instanceof Date)
-            {
-               b.append(" o.").append(p.field_).append(p.op_).append(":").append(p.field_).append(i);
-            }
-            else
-            {
-               b.append(" o.").append(p.field_).append(p.op_).append(p.value_);
-            }
-         }
+        b.append(" WHERE ");
+        buildConditionWithBinding(b, this);
       }
-
       if (orderBy_ != null)
       {
          b.append(orderBy_);
@@ -220,42 +78,123 @@ public class ObjectQuery
 
       return b.toString();
    }
-
-   /**
-    * 
-    * @return
-    */
-   public Map<String, Object> getBindingFields()
+   
+   private void buildCondition(StringBuffer b, QueryCondition query) 
    {
-      Map<String, Object> binding = new HashMap<String, Object>();
+     if (query.parameters_.size() > 0)
+     {
+        for (int i = 0; i < query.parameters_.size(); i++)
+        {
+           if (i > 0)
+              b.append(" AND ");
+           Parameter p = query.parameters_.get(i);
+           if (p.value_ instanceof String)
+           {
+              if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
+              {
+                 b.append(p.field_).append(p.op_).append("'").append(p.value_).append("'");
+              }
+              else
+              {
+                 b.append(" o.").append(p.field_).append(p.op_).append("'").append(p.value_).append("'");
+              }
+           }
+           else if (p.value_ instanceof Date)
+           {
+              SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+              String value = ft.format((Date)p.value_);
+              b.append(" o.").append(p.field_).append(p.op_).append("'").append(value).append("'");
+           }
+           else
+           {
+              b.append(" o.").append(p.field_).append(p.op_).append(p.value_);
+           }
+        }
+        if (query.orClauses != null && !query.orClauses.isEmpty()) 
+        {
+          b.append(" AND (");
+          buildOrClause(b, query.orClauses, false);
+          b.append(") ");
+        }
+     }
+     else 
+     {
+        buildOrClause(b, query.orClauses, false);
+     }
+  }
 
-      if (parameters_.size() > 0)
-      {
-         for (int i = 0; i < parameters_.size(); i++)
-         {
-            Parameter p = parameters_.get(i);
-            if (p.value_ instanceof String)
-            {
-               if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
-               {
-                  binding.put(p.field_.substring(6, p.field_.length() - 1) + i, p.value_);
-               }
-               else
-               {
-                  binding.put(p.field_ + i, p.value_);
-               }
-            }
-            else if (p.value_ instanceof Date)
-            {
-               binding.put(p.field_ + i, p.value_);
-            }
-         }
-      }
-
-      return binding;
+   private void buildConditionWithBinding(StringBuffer b, QueryCondition query) 
+   {
+     if (query.parameters_.size() > 0)
+     {        
+        for (int i = 0; i < query.parameters_.size(); i++)
+        {
+           if (i > 0)
+              b.append(" AND ");
+           Parameter p = query.parameters_.get(i);
+           if (p.value_ instanceof String)
+           {
+              if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
+              {
+                 b.append(p.field_).append(p.op_).append(":").append(p.field_.substring(6, p.field_.length() - 1))
+                    .append(i);
+              }
+              else
+              {
+                 b.append(" o.").append(p.field_).append(p.op_).append(":").append(p.field_).append(i);
+              }
+           }
+           else if (p.value_ instanceof Date)
+           {
+              b.append(" o.").append(p.field_).append(p.op_).append(":").append(p.field_).append(i);
+           }
+           else
+           {
+              b.append(" o.").append(p.field_).append(p.op_).append(p.value_);
+           }
+        }
+        if (query.orClauses != null && !query.orClauses.isEmpty()) 
+        {
+          b.append(" AND (");
+          buildOrClause(b, query.orClauses, true);
+          b.append(") ");
+        }
+     }
+     else 
+     {
+        buildOrClause(b, query.orClauses, true);
+     }
    }
 
-   public String getHibernateGroupByQuery()
+   private void buildOrClause(StringBuffer b, List<QueryCondition> orClauses, boolean withBinding) 
+   {
+     if (orClauses != null) 
+     {
+       for (int i = 0; i < orClauses.size(); i++) {
+         if (i > 0) 
+         {
+           b.append(" OR ");              
+         }
+         b.append("(");
+         if (withBinding) {
+           buildConditionWithBinding(b, orClauses.get(i));           
+         } else {
+           buildCondition(b, orClauses.get(i));
+         }
+         b.append(") ");
+       }       
+     }
+  }
+
+  private void buildJoin(StringBuffer b) 
+  {
+     for (Class<?> clazz : joins.keySet()) {
+       b.append(" INNER JOIN ").append(type_.getSimpleName()).append(".memberships");
+//       b.append(" as ").append(joins.get(clazz));
+     }
+  }
+
+  public String getHibernateGroupByQuery()
    {
       StringBuffer b = new StringBuffer();
       b.append("select ");
@@ -328,36 +267,11 @@ public class ObjectQuery
    {
       StringBuffer b = new StringBuffer();
       b.append("SELECT COUNT(o) FROM o IN CLASS ").append(type_.getName());
-      if (parameters_.size() > 0)
+      buildJoin(b);
+      if (parameters_.size() > 0 || orClauses.size() > 0) 
       {
-         b.append(" WHERE ");
-         for (int i = 0; i < parameters_.size(); i++)
-         {
-            if (i > 0)
-               b.append(" AND ");
-            Parameter p = parameters_.get(i);
-            if (p.value_ instanceof String)
-            {
-               if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
-               {
-                  b.append(p.field_).append(p.op_).append("'").append(p.value_).append("'");
-               }
-               else
-               {
-                  b.append(" o.").append(p.field_).append(p.op_).append("'").append(p.value_).append("'");
-               }
-            }
-            else if (p.value_ instanceof Date)
-            {
-               SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-               String value = ft.format((Date)p.value_);
-               b.append(" o.").append(p.field_).append(p.op_).append("'").append(value).append("'");
-            }
-            else
-            {
-               b.append(" o.").append(p.field_).append(p.op_).append(p.value_);
-            }
-         }
+        b.append(" WHERE ");
+        buildCondition(b, this);
       }
       return b.toString();
    }
@@ -369,61 +283,13 @@ public class ObjectQuery
    public String getHibernateCountQueryWithBinding()
    {
       StringBuffer b = new StringBuffer();
-      b.append("SELECT COUNT(o) FROM o IN CLASS ").append(type_.getName());
-      if (parameters_.size() > 0)
+      b.append("SELECT COUNT(o) FROM o IN CLASS ").append(type_.getName());      
+      buildJoin(b);
+      if (parameters_.size() > 0 || orClauses.size() > 0) 
       {
-         b.append(" WHERE ");
-         for (int i = 0; i < parameters_.size(); i++)
-         {
-            if (i > 0)
-               b.append(" AND ");
-            Parameter p = parameters_.get(i);
-            if (p.value_ instanceof String)
-            {
-               if (p.field_.startsWith("UPPER") || p.field_.startsWith("LOWER"))
-               {
-                  b.append(p.field_).append(p.op_).append(":").append(p.field_.substring(6, p.field_.length() - 1))
-                     .append(i);
-               }
-               else
-               {
-                  b.append(" o.").append(p.field_).append(p.op_).append(":").append(p.field_).append(i);
-               }
-            }
-            else if (p.value_ instanceof Date)
-            {
-               b.append(" o.").append(p.field_).append(p.op_).append(":").append(p.field_).append(i);
-            }
-            else
-            {
-               b.append(" o.").append(p.field_).append(p.op_).append(p.value_);
-            }
-         }
+        b.append(" WHERE ");
+        buildConditionWithBinding(b, this);        
       }
       return b.toString();
-   }
-
-   static class Parameter
-   {
-      String op_;
-
-      String field_;
-
-      String label_;
-
-      Object value_;
-
-      Parameter(String op, String field, Object value)
-      {
-         op_ = op;
-         field_ = field;
-         value_ = value;
-      }
-
-      Parameter(String op, String field)
-      {
-         op_ = op;
-         field_ = field;
-      }
    }
 }
